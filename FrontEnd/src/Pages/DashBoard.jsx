@@ -1,6 +1,6 @@
 // src/Pages/DashBoard.jsx
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { FaPlus, FaSearch, FaTimes, FaCloudUploadAlt, FaShieldAlt } from 'react-icons/fa';
+import { FaPlus, FaSearch, FaTimes, FaShieldAlt } from 'react-icons/fa';
 import { UploadCloud, Store, Sparkles } from 'lucide-react';
 
 // Components

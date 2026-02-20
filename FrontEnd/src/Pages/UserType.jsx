@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaReceipt, FaShieldAlt, FaStore, FaUser } from 'react-icons/fa';
+import { FaStore, FaUser } from 'react-icons/fa';
 import { ArrowRight, Zap } from 'lucide-react';
 
 export const UserType = () => {
