@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-    FaTimes, FaCloudUploadAlt, FaPlus, FaTrash, FaSave, FaSpinner,
+    FaTimes, FaPlus, FaTrash, FaSave, FaSpinner,
     FaFileInvoice, FaStore, FaCalendarAlt, FaPhone, FaMapMarkerAlt, FaMagic, FaShieldAlt
 } from 'react-icons/fa';
 import api from '../services/api';

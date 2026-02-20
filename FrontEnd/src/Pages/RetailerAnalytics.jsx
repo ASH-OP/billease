@@ -32,6 +32,7 @@ const RetailerAnalytics = () => {
             // Let the interceptor or auth context handle redirect or wait
             // But valid to show loading or redirect if we know for sure not auth
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isRetailerAuth]);
 
     const fetchData = async () => {
@@ -198,7 +199,7 @@ const RetailerAnalytics = () => {
     if (isLoading) return <div className="h-screen flex items-center justify-center"><Loader2 className="animate-spin text-orange-500 w-10 h-10" /></div>;
     if (!analyticsData) return <div className="h-screen flex flex-col items-center justify-center text-gray-500"><p>No data available.</p><button onClick={() => navigate('/retailerDashboard')} className="mt-4 text-orange-600 underline">Go Back</button></div>;
 
-    const { totalRevenue, totalOrders, avgOrderValue, salesTrendData, trafficData, peakHoursData, loyaltyData, topProductsData, weeklyRadarData } = analyticsData;
+    const { totalRevenue, totalOrders, avgOrderValue, salesTrendData, peakHoursData, loyaltyData, topProductsData, weeklyRadarData } = analyticsData;
 
     return (
         <div className="min-h-screen bg-slate-50 p-6 md:p-10 font-sans animate-in fade-in duration-500 relative">

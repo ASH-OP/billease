@@ -1,6 +1,6 @@
 // src/Pages/SettingsNotifications.jsx
 import React from 'react';
-import { FaBell, FaEnvelope, FaSms } from 'react-icons/fa';
+import { FaBell } from 'react-icons/fa';
 
 const SettingsNotifications = () => {
 
@@ -8,7 +8,7 @@ const SettingsNotifications = () => {
     const ToggleSwitch = ({ label, enabled }) => (
         <div className="flex items-center justify-between py-3">
             <span className="text-sm font-medium text-gray-700">{label}</span>
-             {/* Basic visual toggle - replace with actual switch component later */}
+            {/* Basic visual toggle - replace with actual switch component later */}
             <button
                 type="button"
                 className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 ${enabled ? 'bg-orange-500' : 'bg-gray-300'
@@ -42,13 +42,13 @@ const SettingsNotifications = () => {
                             <ToggleSwitch label="Receive In-App Notifications" enabled={true} />
                         </div>
 
-                         <div className="p-4 border border-gray-200 rounded-lg bg-gray-50 divide-y divide-gray-200">
+                        <div className="p-4 border border-gray-200 rounded-lg bg-gray-50 divide-y divide-gray-200">
                             <h3 className="text-lg font-semibold mb-3 text-gray-800">Bill Reminders</h3>
                             <ToggleSwitch label="Email Reminder for Due Bills" enabled={true} />
                             <ToggleSwitch label="SMS Reminder for Due Bills" enabled={false} />
                         </div>
 
-                         <p className="text-center text-gray-400 text-xs mt-6 italic">
+                        <p className="text-center text-gray-400 text-xs mt-6 italic">
                             Notification preferences saving functionality coming soon.
                         </p>
 

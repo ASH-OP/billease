@@ -1,6 +1,6 @@
 // src/Pages/DashBoard.jsx
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { FaPlus, FaSearch, FaReceipt, FaStore, FaTimes, FaCloudUploadAlt, FaShieldAlt } from 'react-icons/fa';
+import { FaPlus, FaSearch, FaTimes, FaCloudUploadAlt, FaShieldAlt } from 'react-icons/fa';
 import { Receipt, UploadCloud, Store, TrendingUp, Sparkles } from 'lucide-react';
 import toast from 'react-hot-toast';
 

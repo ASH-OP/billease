@@ -17,6 +17,7 @@ const RetailerBills = () => {
     const [selectedBill, setSelectedBill] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { fetchBills(); }, [isRetailerAuth]);
 
     const fetchBills = async () => {
