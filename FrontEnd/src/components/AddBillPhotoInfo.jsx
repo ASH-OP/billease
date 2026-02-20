@@ -20,7 +20,6 @@ const AddBillPhotoInfo = ({ isOpen, onClose, onSuccess }) => {
     const [items, setItems] = useState([{ itemName: '', cost: '', warrantyValue: '', warrantyUnit: 'months' }]);
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
-    const fileInputRef = useRef(null);
 
     if (!isOpen) return null;
 

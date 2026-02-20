@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import {
     X, Printer, Download, ShoppingBag, Calendar,
-    User, Phone, Mail, MapPin, Loader2, Shield, Receipt
+    User, Phone, Mail, Loader2, Shield, Receipt
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';

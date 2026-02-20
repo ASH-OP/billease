@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import toast from 'react-hot-toast';
 import {
-    FaEdit, FaTrash, FaTimes, FaSave, FaUndo, FaPlus, FaMinus,
+    FaEdit, FaTrash, FaTimes, FaSave, FaPlus,
     FaImage, FaFilePdf, FaSpinner, FaMapMarkerAlt,
     FaShieldAlt, FaStore, FaCalendarAlt, FaUser, FaPhone, FaEnvelope
 } from 'react-icons/fa';
@@ -46,17 +46,13 @@ const BillDetailModal = ({ bill, isOpen, onClose, onUpdate, onDelete, isEditable
             });
 
             // Reset edit state
-            if (!isEditing || (editableBillData._id !== bill._id)) {
-                setSelectedFile(null);
-                setPreviewUrl(null);
-                setIsDirty(false);
-            }
+            setSelectedFile(null);
+            setPreviewUrl(null);
         }
         // eslint-disable-next-line
     }, [bill?._id, isOpen]);
 
     // --- Helpers ---
-    const [isDirty, setIsDirty] = useState(false);
 
     // Preview Handler
     useEffect(() => {
@@ -69,14 +65,12 @@ const BillDetailModal = ({ bill, isOpen, onClose, onUpdate, onDelete, isEditable
     // --- Handlers ---
     const handleChange = (e) => {
         setEditableBillData({ ...editableBillData, [e.target.name]: e.target.value });
-        setIsDirty(true);
     };
 
     const handleItemChange = (index, field, value) => {
         const newItems = [...editableBillData.items];
         newItems[index][field] = value;
         setEditableBillData({ ...editableBillData, items: newItems });
-        setIsDirty(true);
     };
 
     const handleAddItem = () => {
@@ -84,7 +78,6 @@ const BillDetailModal = ({ bill, isOpen, onClose, onUpdate, onDelete, isEditable
             ...prev,
             items: [...prev.items, { itemName: '', cost: '' }]
         }));
-        setIsDirty(true);
     };
 
     const handleRemoveItem = (index) => {
@@ -93,14 +86,12 @@ const BillDetailModal = ({ bill, isOpen, onClose, onUpdate, onDelete, isEditable
             ...prev,
             items: prev.items.filter((_, i) => i !== index)
         }));
-        setIsDirty(true);
     };
 
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
         if (file) {
             setSelectedFile(file);
-            setIsDirty(true);
         }
     };
 
@@ -111,7 +102,6 @@ const BillDetailModal = ({ bill, isOpen, onClose, onUpdate, onDelete, isEditable
             const formattedDate = bill.purchaseDate ? new Date(bill.purchaseDate).toISOString().split('T')[0] : '';
             setEditableBillData({ ...bill, purchaseDate: formattedDate });
             setSelectedFile(null);
-            setIsDirty(false);
         }
         setIsEditing(!isEditing);
     };

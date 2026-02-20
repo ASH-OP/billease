@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { FaReceipt, FaSpinner } from 'react-icons/fa';
-import { ShoppingBag, Calendar, ChevronRight, Tag, Shield } from 'lucide-react';
+import { FaReceipt } from 'react-icons/fa';
+import { Calendar, ChevronRight, Tag, Shield } from 'lucide-react';
 import { customerApi } from '../services/api';
 import RetailerBillModal from './RetailerBillModal';
 
@@ -39,7 +39,7 @@ const CustomerDigitalBills = ({ searchTerm = '', onStatsUpdate }) => {
             }
         };
         fetchDigitalBills();
-    }, []);
+    }, [onStatsUpdate]);
 
     const handleViewInvoice = (bill) => { setSelectedBill(bill); setIsModalOpen(true); };
     const handleCloseModal = () => { setIsModalOpen(false); setTimeout(() => setSelectedBill(null), 300); };
