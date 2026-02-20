@@ -1,7 +1,7 @@
 // src/Pages/CustomerPersonalInformation.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
-import { FaCamera, FaSave, FaSpinner, FaUserCircle, FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaCamera, FaSave, FaSpinner, FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import { Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';

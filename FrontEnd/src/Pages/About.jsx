@@ -1,6 +1,6 @@
 // src/pages/About.jsx
 import React, { useState, useEffect } from 'react';
-import { FaUsers, FaStore, FaSeedling, FaLock, FaMobileAlt, FaChartLine, FaRocket, FaHandshake, FaShieldAlt } from 'react-icons/fa';
+import { FaUsers, FaStore, FaSeedling, FaLock, FaMobileAlt, FaChartLine, FaRocket, FaHandshake } from 'react-icons/fa';
 import { Receipt } from 'lucide-react';
 
 const features = [

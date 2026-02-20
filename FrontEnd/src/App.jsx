@@ -15,7 +15,6 @@ import CustomerDashboardHeader from './components/CustomerDashboardHeader';
 import RetailerDashboardHeader from './components/RetailerDashboardHeader';
 
 // --- Pages ---
-import { UserType } from './Pages/UserType';
 import CustomerPage from './Pages/CustomerPage';
 import Contact from './Pages/Contact';
 import RetailerPage from './Pages/RetailerPage';
