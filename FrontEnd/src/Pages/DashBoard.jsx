@@ -1,8 +1,7 @@
 // src/Pages/DashBoard.jsx
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaPlus, FaSearch, FaTimes, FaCloudUploadAlt, FaShieldAlt } from 'react-icons/fa';
-import { Receipt, UploadCloud, Store, TrendingUp, Sparkles } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { UploadCloud, Store, Sparkles } from 'lucide-react';
 
 // Components
 import AddBillPhotoInfo from '../components/AddBillPhotoInfo';
@@ -20,7 +19,6 @@ const Dashboard = () => {
 
   const [bills, setBills] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
@@ -45,7 +43,6 @@ const Dashboard = () => {
       } else { setBills([]); }
     } catch (err) {
       console.error("Error fetching bills:", err);
-      setError("Could not load your bills.");
     } finally { setIsLoading(false); }
   }, [isAuthenticated]);
 

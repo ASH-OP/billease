@@ -1,7 +1,7 @@
 // src/Pages/HelpandSupport.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { FaRobot, FaTimes, FaChevronDown, FaPaperPlane } from 'react-icons/fa';
-import { MessageCircle, HelpCircle, Mail, Phone } from 'lucide-react';
+import { MessageCircle, HelpCircle, Mail } from 'lucide-react';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 

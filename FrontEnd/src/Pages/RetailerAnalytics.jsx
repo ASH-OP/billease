@@ -2,19 +2,19 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
+    BarChart, Bar, PieChart, Pie, Cell,
     XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-    AreaChart, Area, ComposedChart, Radar, RadarChart, PolarGrid,
+    AreaChart, Area, Radar, RadarChart, PolarGrid,
     PolarAngleAxis, PolarRadiusAxis
 } from 'recharts';
-import { ArrowLeft, TrendingUp, DollarSign, ShoppingCart, Activity, BarChart2, Loader2, Clock, Users, Sparkles, X, Bot } from 'lucide-react';
+import { ArrowLeft, TrendingUp, DollarSign, ShoppingCart, Activity, Loader2, Clock, Users, Sparkles, X, Bot } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { retailerApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const RetailerAnalytics = () => {
     const navigate = useNavigate();
-    const { retailerUser, isRetailerAuth } = useAuth();
+    const { isRetailerAuth } = useAuth();
     const [bills, setBills] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
