@@ -79,5 +79,5 @@ const startServer = async () => {
 
 startServer();
 
-// Export for Vercel serverless
+// Export the Express API for Vercel Serverless
 module.exports = app;
