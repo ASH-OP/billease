@@ -1,13 +1,17 @@
 // utils/emailUtils.js
 const nodemailer = require('nodemailer');
 
-// Create reusable transporter using Gmail app password from .env
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // Use SSL/TLS
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
 });
 
 /**
@@ -17,11 +21,11 @@ const transporter = nodemailer.createTransport({
  * @param {string} name    - User's name for personalisation
  */
 const sendOtpEmail = async (toEmail, otp, name = 'there') => {
-    const mailOptions = {
-        from: `"BillEase" <${process.env.EMAIL_USER}>`,
-        to: toEmail,
-        subject: '🔐 Your BillEase Verification Code',
-        html: `
+  const mailOptions = {
+    from: `"BillEase" <${process.env.EMAIL_USER}>`,
+    to: toEmail,
+    subject: '🔐 Your BillEase Verification Code',
+    html: `
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,9 +89,9 @@ const sendOtpEmail = async (toEmail, otp, name = 'there') => {
 </body>
 </html>
         `,
-    };
+  };
 
-    await transporter.sendMail(mailOptions);
+  await transporter.sendMail(mailOptions);
 };
 
 module.exports = { sendOtpEmail };
