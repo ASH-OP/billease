@@ -2,12 +2,15 @@
 
 // --- Single set of imports at the top ---
 const User = require('../models/User');
+const OTP = require('../models/OTP');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config(); // Ensure environment variables are loaded FIRST
 const { OAuth2Client } = require('google-auth-library'); // Import Google library
 // Import Cloudinary helpers
-const { uploadFileToCloudinary, deleteFileFromCloudinary, isFileTypeSupported } = require('../utils/cloudinaryUtils'); // Adjust path if needed
+const { uploadFileToCloudinary, deleteFileFromCloudinary, isFileTypeSupported } = require('../utils/cloudinaryUtils');
+// Import email utility
+const { sendOtpEmail } = require('../utils/emailUtils');
 
 
 // --- Initialize Google OAuth2 Client AFTER imports and dotenv ---
@@ -33,14 +36,90 @@ const generateToken = (id) => {
     });
 };
 
+// --- Send OTP ---
+exports.sendOtp = async (req, res) => {
+    const { email, name } = req.body;
+    if (!email) return res.status(400).json({ success: false, message: 'Email is required.' });
+
+    try {
+        // Block if email is already registered
+        const existing = await User.findOne({ email: email.toLowerCase() });
+        if (existing) {
+            return res.status(409).json({ success: false, message: 'Email already registered. Please log in.' });
+        }
+
+        // Generate a random 6-digit OTP
+        const plainOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        const hashedOtp = await bcrypt.hash(plainOtp, 10);
+
+        // Upsert: delete old OTP for this email and insert fresh one
+        await OTP.deleteOne({ email: email.toLowerCase() });
+        await OTP.create({ email: email.toLowerCase(), otp: hashedOtp });
+
+        // Send OTP via email
+        await sendOtpEmail(email, plainOtp, name || 'there');
+
+        return res.status(200).json({ success: true, message: 'OTP sent to your email.' });
+    } catch (error) {
+        console.error('SendOTP Error:', error);
+        return res.status(500).json({ success: false, message: 'Failed to send OTP. Please try again.' });
+    }
+};
+
+// --- Verify OTP ---
+exports.verifyOtp = async (req, res) => {
+    const { email, otp } = req.body;
+    if (!email || !otp) return res.status(400).json({ success: false, message: 'Email and OTP are required.' });
+
+    try {
+        const record = await OTP.findOne({ email: email.toLowerCase() });
+        if (!record) {
+            return res.status(400).json({ success: false, message: 'OTP expired or not found. Please request a new one.' });
+        }
+
+        const isMatch = await bcrypt.compare(otp, record.otp);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: 'Invalid OTP. Please try again.' });
+        }
+
+        // OTP verified — delete it immediately so it can't be reused
+        await OTP.deleteOne({ email: email.toLowerCase() });
+
+        // Issue a short-lived verification token the register endpoint will check
+        const verificationToken = jwt.sign(
+            { email: email.toLowerCase(), purpose: 'email-verified' },
+            process.env.JWT_SECRET,
+            { expiresIn: '10m' }
+        );
+
+        return res.status(200).json({ success: true, verificationToken });
+    } catch (error) {
+        console.error('VerifyOTP Error:', error);
+        return res.status(500).json({ success: false, message: 'Server error during OTP verification.' });
+    }
+};
+
 // --- Register User ---
 exports.register = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role, verificationToken, isProfileComplete } = req.body;
 
     try {
         // 1. Validate input
         if (!name || !email || !password) {
             return res.status(400).json({ success: false, message: 'Please provide name, email, and password' });
+        }
+
+        // 1b. Require a valid email-verification token
+        if (!verificationToken) {
+            return res.status(403).json({ success: false, message: 'Email verification required before registration.' });
+        }
+        try {
+            const decoded = jwt.verify(verificationToken, process.env.JWT_SECRET);
+            if (decoded.purpose !== 'email-verified' || decoded.email !== email.toLowerCase()) {
+                return res.status(403).json({ success: false, message: 'Invalid verification token.' });
+            }
+        } catch {
+            return res.status(403).json({ success: false, message: 'Verification token expired. Please verify your email again.' });
         }
         if (password.length < 6) {
             return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long' });
@@ -57,7 +136,8 @@ exports.register = async (req, res) => {
             name,
             email: email.toLowerCase(),
             password,
-            role: role || 'customer'
+            role: role || 'customer',
+            isProfileComplete: isProfileComplete !== undefined ? isProfileComplete : (role === 'retailer' ? false : undefined)
         });
 
         // 4. Generate token and send response
@@ -97,7 +177,7 @@ exports.register = async (req, res) => {
 
 // --- Login User ---
 exports.login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     try {
         if (!email || !password) {
@@ -108,6 +188,14 @@ exports.login = async (req, res) => {
 
         // Check if user exists and password matches
         if (user && (await user.comparePassword(password))) {
+            // Role mismatch check — prevent customer logging in as retailer and vice versa
+            if (role && user.role !== role) {
+                return res.status(403).json({
+                    success: false,
+                    message: `This account is registered as a ${user.role}. Please use the ${user.role === 'customer' ? 'Customer' : 'Retailer'} login page.`
+                });
+            }
+
             const token = generateToken(user._id);
             if (!token) { // Check if token generation failed
                 return res.status(500).json({ success: false, message: 'Server configuration error (JWT).' });

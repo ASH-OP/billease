@@ -1,14 +1,15 @@
 // routes/auth.js
 const express = require('express');
 const router = express.Router();
-// Import the new updateProfile function
-const { register, login, getMe, googleAuth, updateProfile } = require('../controller/authController');
-const { protect } = require('../middleware/authMiddleware'); // Import protect middleware
+const { register, login, getMe, googleAuth, updateProfile, sendOtp, verifyOtp } = require('../controller/authController');
+const { protect } = require('../middleware/authMiddleware');
 
+router.post('/send-otp', sendOtp);
+router.post('/verify-otp', verifyOtp);
 router.post('/register', register);
 router.post('/login', login);
 router.post('/google', googleAuth);
-router.get('/me', protect, getMe); // Route to get current user data
-router.patch('/profile', protect, updateProfile); // <-- Add PATCH route for profile update
+router.get('/me', protect, getMe);
+router.patch('/profile', protect, updateProfile);
 
 module.exports = router;

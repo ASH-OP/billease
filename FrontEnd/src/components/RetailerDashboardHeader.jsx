@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { LogOut, Menu, X, ChevronDown, LayoutDashboard, Phone, Info, Settings } from 'lucide-react';
+import { LogOut, Menu, X, ChevronDown, LayoutDashboard, Phone, Info, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const RetailerDashboardHeader = () => {
@@ -292,8 +292,8 @@ const RetailerDashboardHeader = () => {
                     <NavLink to="/retailerDashboard" onClick={() => setIsUserDropdownOpen(false)} className="rdh-dd-item">
                       <LayoutDashboard size={14} /> Dashboard
                     </NavLink>
-                    <NavLink to="/completeRetailerProfile" onClick={() => setIsUserDropdownOpen(false)} className="rdh-dd-item">
-                      <Settings size={14} /> Shop Settings
+                    <NavLink to="/retailerPersonalInformation" onClick={() => setIsUserDropdownOpen(false)} className="rdh-dd-item">
+                      <User size={14} /> My Profile
                     </NavLink>
                     <hr className="rdh-dd-divider" />
                     <button onClick={handleLogout} className="rdh-dd-item danger">

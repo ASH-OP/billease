@@ -28,8 +28,8 @@ const RetailerPage = () => {
     const handleEmailPasswordSubmit = async (event) => {
         event.preventDefault();
         if (!email || !password) { toast.error('Please enter both email and password.'); return; }
-        const success = await login(email, password, 'retailer');
-        if (success) navigate('/retailerDashboard');
+        await login(email, password, 'retailer');
+        // Navigation is handled by the useEffect above based on isProfileComplete
     };
 
     const handleGoogleSuccess = async (credentialResponse) => {

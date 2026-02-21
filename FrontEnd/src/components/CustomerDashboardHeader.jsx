@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { LayoutDashboard, Phone } from 'lucide-react';
 import UserDropdown from './UserDropdown';
@@ -8,21 +8,13 @@ const CustomerDashboardHeader = () => {
     const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
-    const userDropdownRef = useRef(null);
     const { customerUser } = useAuth();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 10);
-        const handleClickOutside = (e) => {
-            if (userDropdownRef.current && !userDropdownRef.current.contains(e.target)) {
-                setIsUserDropdownOpen(false);
-            }
-        };
         window.addEventListener('scroll', onScroll);
-        document.addEventListener('mousedown', handleClickOutside);
         return () => {
             window.removeEventListener('scroll', onScroll);
-            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
@@ -190,7 +182,7 @@ const CustomerDashboardHeader = () => {
                     </ul>
 
                     <div className="cdh-right">
-                        <div style={{ position: 'relative' }} ref={userDropdownRef}>
+                        <div style={{ position: 'relative' }}>
                             <button onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)} className="cdh-avatar-btn">
                                 <div className="cdh-avatar">{initials}</div>
                                 <span className="cdh-username">{customerUser?.name?.split(' ')[0] || 'Account'}</span>

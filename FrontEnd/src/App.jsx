@@ -27,7 +27,8 @@ import CompleteRetailerProfile from './Pages/CompleteRetailerProfile';
 import CustomerPersonalInformation from './Pages/CustomerPersonalInformation';
 import HelpandSupport from './Pages/HelpandSupport';
 import RetailerBills from './Pages/RetailerBills';
-import RetailerAnalytics from './Pages/RetailerAnalytics'; // <--- 1. NEW IMPORT
+import RetailerAnalytics from './Pages/RetailerAnalytics';
+import RetailerPersonalInformation from './Pages/RetailerPersonalInformation';
 
 // --- Settings Placeholder Pages ---
 import SettingsSecurity from './Pages/SettingsSecurity';
@@ -73,6 +74,7 @@ const AppContent = () => {
     // <--- 2. UPDATE LOGIC: Add check for /retailer/analytics
     const isRetailerRoute = location.pathname.startsWith('/retailerDashboard') ||
         location.pathname.startsWith('/completeRetailerProfile') ||
+        location.pathname.startsWith('/retailerPersonalInformation') ||
         location.pathname.startsWith('/retailer/bills') ||
         location.pathname.startsWith('/retailer/analytics');
 
@@ -82,6 +84,11 @@ const AppContent = () => {
     } else if (isRetailerRoute) {
         CurrentHeader = RetailerDashboardHeader;
     }
+
+    const isAuthPage = [
+        '/customerLogin', '/retailerLogin',
+        '/CustomerRegister', '/RegisterRetailer', '/login'
+    ].includes(location.pathname);
 
     const hideLayout = showSplash || location.pathname === '/';
 
@@ -94,8 +101,8 @@ const AppContent = () => {
             <AuthProvider>
                 <Toaster position="top-center" reverseOrder={false} containerStyle={{ zIndex: 9999 }} />
 
-                {!hideLayout && <CurrentHeader />}
-                <main className={`flex-grow ${!hideLayout ? 'pt-28' : ''}`}>
+                {!hideLayout && !isAuthPage && <CurrentHeader />}
+                <main className={`flex-grow ${!hideLayout && !isAuthPage ? 'pt-28' : ''}`}>
                     <Routes>
                         {/* --- Public Routes --- */}
                         <Route path="/" element={<LandingPage />} />
@@ -133,6 +140,7 @@ const AppContent = () => {
                             <Route path="/retailer/bills" element={<RetailerBills />} />
                             {/* <--- 3. NEW ROUTE ADDED HERE --- */}
                             <Route path="/retailer/analytics" element={<RetailerAnalytics />} />
+                            <Route path="/retailerPersonalInformation" element={<RetailerPersonalInformation />} />
                         </Route>
 
                         {/* --- 404 Route --- */}

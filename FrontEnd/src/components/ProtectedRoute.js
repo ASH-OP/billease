@@ -1,16 +1,13 @@
 // src/components/ProtectedRoute.js
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ requiredRole }) => {
-    const { isCustomerAuth, isRetailerAuth, isLoading } = useAuth();
-
-    console.log(`ProtectedRoute [Role: ${requiredRole}]:`, { isCustomerAuth, isRetailerAuth, isLoading });
-
+    const { isCustomerAuth, isRetailerAuth, retailerUser, isLoading } = useAuth();
+    const location = useLocation();
 
     if (isLoading) {
-        // Optional: Show a loading spinner while checking auth
         return (
             <div className="flex justify-center items-center min-h-screen">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-500"></div>
@@ -18,11 +15,17 @@ const ProtectedRoute = ({ requiredRole }) => {
         );
     }
 
-    // Determine which auth to check
     if (requiredRole === 'retailer') {
-        return isRetailerAuth ? <Outlet /> : <Navigate to="/retailerLogin" replace />;
+        if (!isRetailerAuth) return <Navigate to="/retailerLogin" replace />;
+
+        // If profile not complete and trying to access the dashboard (not the profile page), redirect
+        const isProfilePage = location.pathname === '/completeRetailerProfile';
+        if (!isProfilePage && retailerUser && !retailerUser.isProfileComplete) {
+            return <Navigate to="/completeRetailerProfile" replace />;
+        }
+
+        return <Outlet />;
     } else {
-        // Default to customer
         return isCustomerAuth ? <Outlet /> : <Navigate to="/customerLogin" replace />;
     }
 };

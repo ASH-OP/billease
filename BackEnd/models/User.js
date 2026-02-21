@@ -31,7 +31,22 @@ const userSchema = new Schema({
     profilePictureCloudinaryId: { type: String, default: '' }
 }, { timestamps: true });
 
-// ... Keep your pre('save') and comparePassword methods ...
-// (Copy them from your existing file)
+// Hash password before saving (only if it was modified)
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password') || !this.password) return next();
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
+
+// Compare entered password with stored hashed password
+userSchema.methods.comparePassword = async function (enteredPassword) {
+    if (!this.password) return false; // Google-only accounts have no password
+    return bcrypt.compare(enteredPassword, this.password);
+};
 
 module.exports = mongoose.model('User', userSchema);
