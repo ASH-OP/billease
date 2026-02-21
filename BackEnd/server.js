@@ -65,10 +65,12 @@ const startServer = async () => {
     try {
         await dbConnect();
         cloudinaryConfig.cloudinaryConnect();
-        // Always listen — required for Render (and works on localhost too)
-        app.listen(PORT, () => {
-            console.log(`Server is UP and RUNNING at PORT ${PORT}`);
-        });
+        // Vercel serverless requires NOT calling app.listen in production
+        if (process.env.NODE_ENV !== 'production') {
+            app.listen(PORT, () => {
+                console.log(`Server is UP and RUNNING at PORT ${PORT}`);
+            });
+        }
     } catch (error) {
         console.error("Failed to start server:", error);
         process.exit(1);
