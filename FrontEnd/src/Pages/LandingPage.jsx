@@ -6,7 +6,7 @@ import {
     FaChartLine, FaRocket, FaHandshake, FaBolt, FaCheckCircle,
     FaGithub, FaTwitter, FaLinkedin
 } from 'react-icons/fa';
-import { ArrowRight, ChevronDown, Sparkles, Zap, Star } from 'lucide-react';
+import { ArrowRight, Sparkles, Zap } from 'lucide-react';
 
 /* ─────────────────────────────── HOOKS ─────────────────────────────── */
 
@@ -44,12 +44,6 @@ function useParallax(speed = 0.15) {
 
 /* ─────────────────────────────── DATA ─────────────────────────────── */
 
-const stats = [
-    { value: '50K+', label: 'Bills Processed' },
-    { value: '12K+', label: 'Happy Customers' },
-    { value: '3K+', label: 'Retailers' },
-    { value: '99.9%', label: 'Uptime' },
-];
 
 const customerFeatures = [
     {
@@ -378,46 +372,9 @@ export default function LandingPage() {
                         </button>
                     </div>
 
-                    {/* Social proof */}
-                    <div className="mt-10 flex items-center justify-center gap-2 text-gray-500 text-sm"
-                        style={{ animation: 'fadeSlideDown 0.8s ease both 1s' }}>
-                        <div className="flex -space-x-2">
-                            {['🧑', '👩', '🧑‍💼', '👩‍💼'].map((e, i) => (
-                                <div key={i} className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-indigo-600 border-2 border-[#05050f] flex items-center justify-center text-xs">{e}</div>
-                            ))}
-                        </div>
-                        <span>Trusted by <strong className="text-white">12,000+</strong> users</span>
-                        <div className="flex gap-0.5">
-                            {[...Array(5)].map((_, i) => <Star key={i} size={12} className="text-amber-400 fill-amber-400" />)}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Scroll indicator */}
-                <button onClick={() => scrollToSection('stats')}
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-gray-600 hover:text-gray-400 transition-colors"
-                    style={{ animation: 'bounce 2s ease infinite 1.5s' }}>
-                    <span className="text-xs font-medium tracking-widest uppercase">Scroll</span>
-                    <ChevronDown size={16} />
-                </button>
-            </section>
-
-            {/* ══════════════════════════════════════════════════════
-                STATS BAR
-            ══════════════════════════════════════════════════════ */}
-            <section id="stats" className="relative py-16 border-y border-white/5">
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 via-transparent to-indigo-500/5" />
-                <div className="relative max-w-5xl mx-auto px-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        {stats.map((s, i) => (
-                            <Reveal key={s.label} delay={i * 100} from="bottom" className="text-center">
-                                <p className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent mb-1">{s.value}</p>
-                                <p className="text-gray-500 text-sm font-medium">{s.label}</p>
-                            </Reveal>
-                        ))}
-                    </div>
                 </div>
             </section>
+
 
             {/* ══════════════════════════════════════════════════════
                 HOW IT WORKS
